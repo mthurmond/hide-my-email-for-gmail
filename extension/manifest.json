@@ -26,7 +26,6 @@
     }],
 
     "web_accessible_resources": [
-        "hider/favicon-no-messages.png", 
         "hider/hider-main.css"
     ]
 }

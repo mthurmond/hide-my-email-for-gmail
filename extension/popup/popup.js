@@ -1,22 +1,19 @@
 const githubURL = 'https://github.com/';
 
 const mattURL = `${githubURL}/mthurmond`;
-const slackHiderURL = `${githubURL}/mthurmond/slack-hider`;
-const feedbackURL = `${githubURL}/mthurmond/slack-hider/issues`;
-
-const benURL = `${githubURL}/tavva`;
-const quietSlackURL = `${githubURL}/tavva/quiet-slack`;
+const gmailInboxHiderURL = `${githubURL}/mthurmond/gmail-inbox-hider`;
+const feedbackURL = `${githubURL}/mthurmond/gmail-inbox-hider/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
-const extensionsDetailsURL = `${manageExtensionsURL}?id=ghbbhaemcgjamohgkapgkdinhgdcpgim`;
+const extensionsDetailsURL = `${manageExtensionsURL}?id=pfalfcdhipoelhhnjckjeddjfoackijp`;
 
 //open the appropriate new tab when the user clicks each link
 document.querySelector('.feedbackLink').addEventListener('click', function() {
     chrome.tabs.create({url: feedbackURL})
 });
 
-document.querySelector('.slackHiderLink').addEventListener('click', function() {
-    chrome.tabs.create({url: slackHiderURL})
+document.querySelector('.gmailInboxHiderLink').addEventListener('click', function() {
+    chrome.tabs.create({url: gmailInboxHiderURL})
 });
 
 document.querySelector('.extensionsDetailsLink').addEventListener('click', function() {
@@ -27,14 +24,6 @@ document.querySelector('.manageExtensionsLink').addEventListener('click', functi
     chrome.tabs.create({url: manageExtensionsURL})
 });
 
-document.querySelector('.benLink').addEventListener('click', function() {
-    chrome.tabs.create({url: benURL})
-});
-
 document.querySelector('.mattLink').addEventListener('click', function() {
     chrome.tabs.create({url: mattURL})
-});
-
-document.querySelector('.quietSlackLink').addEventListener('click', function() {
-    chrome.tabs.create({url: quietSlackURL})
 });
