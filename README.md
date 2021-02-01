@@ -6,13 +6,12 @@
 See a problem? Please [file any issues here](https://github.com/mthurmond/slack-hider/issues). 
 
 # Other helpful extensions
-I created [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want.
+Do you use slack? I also created [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want. 
 
-I also love, and recommend, these other zen-inducing chrome extensions:
+Looking for other helpful extensions? I use and recommend all of these: 
 1. [News Feed Eradicator](https://github.com/jordwest/news-feed-eradicator) for Facebook
-2. [Inbox When Ready](https://chrome.google.com/webstore/detail/inbox-when-ready-for-gmai/cdedhgmbfjhobfnphaoihdfmnjidcpim?hl=en) for Gmail
-3. [Distraction Free](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en) for Youtube
-4. [uBlock](https://github.com/gorhill/uBlock) for ad blocking 
+2. [Distraction Free](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en) for Youtube
+3. [uBlock](https://github.com/gorhill/uBlock) for ad blocking 
 
  # Demo
  ![Gmail inbox hider gif]()
