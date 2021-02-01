@@ -1,0 +1,35 @@
+/* adjust the styling of native slack classes when messages are turned off */
+
+/* remove sidebar */
+.p-channel_sidebar__list { 
+    visibility: hidden; 
+}
+
+/* remove message alert badges */
+.c-mention_badge { 
+    display: none; 
+}
+
+/* add opacity to workspace */
+.p-workspace__primary_view, .p-workspace__secondary_view { 
+    opacity: 0.2; 
+    transition: opacity 1.0s; 
+}
+
+/* remove opacity when user hovers over workspace */
+.p-workspace__primary_view:hover, .p-workspace__secondary_view:hover, .p-workspace__primary_view:hover ~ .p-workspace__secondary_view {
+    opacity: 1.0; 
+    transition: opacity 1.0s; 
+}
+
+/* fade top nav and sidebar color to black */
+.p-top_nav, .p-ia__sidebar_header, .p-channel_sidebar, .p-top_nav__search { 
+    background-color: black; 
+    transition: background-color 2.0s; 
+}
+
+/* adjust hover color of search bar and top sidebar button so it's distinct from the black background */
+.p-ia__sidebar_header--top-nav:not(.p-ia__sidebar_header--creator-setup):hover, .p-top_nav__search:hover {
+    background-color: #171617; 
+    transition: none; 
+}

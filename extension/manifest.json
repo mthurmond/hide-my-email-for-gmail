@@ -1,0 +1,32 @@
+{
+    "name": "Gmail inbox hider",
+    "version": "1.0",
+    "description": "Hide your gmail inbox to focus and get in the flow. Unhide it whenever you're ready.",
+    "manifest_version": 2,
+
+    "browser_action": {
+        "default_popup": "popup/popup.html"
+      },
+
+    "permissions": [
+        "storage"
+    ],
+
+    "icons": {
+        "16": "icons/16.png",
+        "32": "icons/32.png",
+        "48": "icons/48.png",
+        "128": "icons/128.png"
+    },
+
+    "content_scripts": [{
+        "matches": ["https://mail.google.com/mail/*"],
+        "css": ["hider/hider-button.css"],
+        "js": ["hider/hider.js"]
+    }],
+
+    "web_accessible_resources": [
+        "hider/favicon-no-messages.png", 
+        "hider/hider-main.css"
+    ]
+}
