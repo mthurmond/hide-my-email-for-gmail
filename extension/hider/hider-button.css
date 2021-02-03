@@ -1,8 +1,11 @@
 /* style the toggle button */
-/* #hider__message-toggle-button {
-    margin: 20px 0 2px 16px;
-    font-weight: 900;
-    color: white;
-    font-size: 15px;
-    font-style: Slack-Lato;
-} */
+
+#hider__hide_inbox {
+    float: left;
+    padding-left: 5px;
+}
+
+#hider__button {
+    padding-top: 2.2px;
+    color: #6a6d76;
+}

@@ -1,6 +1,6 @@
 {
     "name": "Gmail inbox hider",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Hide your gmail inbox to focus and get in the flow. Unhide it whenever you're ready.",
     "manifest_version": 2,
 
@@ -23,9 +23,6 @@
         "matches": ["https://mail.google.com/mail/*"],
         "css": ["hider/hider-button.css"],
         "js": ["hider/hider.js"]
-    }],
+    }]
 
-    "web_accessible_resources": [
-        "hider/hider-main.css"
-    ]
 }

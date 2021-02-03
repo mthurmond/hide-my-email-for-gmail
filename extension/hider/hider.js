@@ -1,22 +1,36 @@
-// add stylesheet to the DOM so the "inbox hidden" styles appear immediately
-const stylesheetUrl = chrome.extension.getURL('hider/hider-main.css');    
-const stylesheetElement = document.createElement('link');
-stylesheetElement.rel = 'stylesheet';
-stylesheetElement.setAttribute('href', stylesheetUrl);
-stylesheetElement.setAttribute('id', "hider__main-stylesheet");
-document.body.appendChild(stylesheetElement);
-
 //create flag to control whether inbox should be hidden. set value to true and remove initial toggleInbox function call to show inbox by default. set to false and include an initial toggleInbox call to hide inbox by default.
 let showMessages = false;
 
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
+function handleHashChange() {
+    if (location.hash === '#inbox') {
+        // display button
+        inboxToggleButton.style.display = 'flex';
+        
+        // if user navigates to inbox and messages are hidden, hide the main body
+        if (showMessages) {
+            document.getElementById(':3').style.visibility = 'visible';
+        } else {
+            document.getElementById(':3').style.visibility = 'hidden';
+        }
+
+    } else {
+        //hide button
+        inboxToggleButton.style.display = "none";
+        //display main body
+        document.getElementById(':3').style.visibility = 'visible';
+
+    }
+
+}
+
 function addToggleButton() {
     inboxToggleButton = document.createElement('div');
     inboxToggleButton.id = 'hider__hide_inbox';
-    inboxToggleButton.classList.add('G-Ni', 'J-J5-Ji');
-    inboxToggleButton.innerHTML = '<div class="T-I J-J5-Ji nu T-I-ax7 L3 T-I-Zf-aw2" act="20" role="button" tabindex="0" style="user-select: none;" data-tooltip="Toggle inbox"><div class="hider__button">Show inbox</div></div>';
+    inboxToggleButton.classList.add('G-Ni', 'J-J5-Ji', 'G-atb');
+    inboxToggleButton.innerHTML = '<div class="T-I J-J5-Ji nu T-I-ax7 L3 T-I-Zf-aw2" act="20" role="button" tabindex="0" style="user-select: none;" data-tooltip="Toggle inbox"><div id="hider__button">Show inbox</div></div>';
 
     //add listener that calls "toggleMessages" when button clicked, and passes opposite of current "showMessages" boolean value. "showMessages" is set to 'false' initially, so this initially passes 'true'.
     inboxToggleButton.addEventListener('click', function (evt) {
@@ -24,9 +38,12 @@ function addToggleButton() {
     });
 
     //store gmail button toolbar in a variable
-    const buttonToolbar = document.getElementsByClassName('G-tF')[0];
-    buttonToolbar.appendChild(inboxToggleButton);
+    const buttonToolbar = document.getElementById(':4');
+    buttonToolbar.prepend(inboxToggleButton);
 
+    // //if user navigates to different hash, don't displaying button
+    // window.addEventListener('hashchange', handleHashChange);
+    window.onhashchange = handleHashChange;
 }
 
 function swapTitle(showDefaultTitle) {
@@ -54,14 +71,37 @@ function swapTitle(showDefaultTitle) {
 //called when show/hide button clicked, with current "showMessages" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleMessages(areMessagesVisible) {
 
-    inboxToggleButton.innerHTML = areMessagesVisible ? 'Hide inbox' : 'Show inbox';
-
-    // disable the stylesheet if messages are visible, enable it if they're hidden
+    const inboxToggleButtonHtml = document.getElementById('hider__button');
+    inboxToggleButtonHtml.innerHTML = areMessagesVisible ? 'Hide inbox' : 'Show inbox';
+    
+    //show/hide main body
     if (areMessagesVisible) {
-        stylesheetElement.setAttribute('disabled', true);
+        document.getElementById(':3').style.visibility = 'visible';
     } else {
-        stylesheetElement.removeAttribute('disabled');
-    } 
+        document.getElementById(':3').style.visibility = 'hidden';
+    }
+
+    // show/hide inbox message badges
+    // remove prior styles
+    const styleToRemove = document.getElementsByClassName('hider__badge-style')[0];
+    if (styleToRemove) {
+        styleToRemove.remove();
+    }
+
+    // add new style
+    const badgeStyle = document.createElement('style');
+    badgeStyle.classList.add('hider__badge-style');
+
+    if (areMessagesVisible) {
+        //add style
+        badgeStyle.innerHTML = ".bsU { display: flex; }";
+        document.body.appendChild(badgeStyle);
+
+    } else {
+        //remove style
+        badgeStyle.innerHTML = ".bsU { display: none !important; }";
+        document.body.appendChild(badgeStyle);
+    }
 
     //swap title each time button pressed
     swapTitle(areMessagesVisible)
@@ -81,8 +121,7 @@ function initiateHider() {
 //continuously check if the required elements exist. once they do, stop checking and call the appropriate function. 
 const checkForElements = setInterval(function () {
     if (
-        document.getElementsByClassName('G-tF').length > 0
-        && document.querySelector('link[rel*="icon"]').href.length > 0 
+        document.getElementById(':4') 
         && document.title.length > 0
     ) {
         clearInterval(checkForElements);
