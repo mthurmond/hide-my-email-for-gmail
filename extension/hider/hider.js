@@ -29,10 +29,10 @@ function handleHashChange() {
 }
 
 function addToggleButton() {
-    inboxToggleButton = document.createElement('div');
+    inboxToggleButton = document.createElement('button');
     inboxToggleButton.id = 'hider__hide_inbox';
-    inboxToggleButton.classList.add('G-Ni', 'J-J5-Ji', 'G-atb');
-    inboxToggleButton.innerHTML = '<div class="T-I J-J5-Ji nu T-I-ax7 L3 T-I-Zf-aw2" act="20" role="button" tabindex="0" style="user-select: none;" data-tooltip="Toggle inbox"><div id="hider__button">Show inbox</div></div>';
+    inboxToggleButton.classList.add('GN', 'GW');
+    inboxToggleButton.innerHTML = 'Show inbox';
 
     //add listener that calls "toggleMessages" when button clicked, and passes opposite of current "showMessages" boolean value. "showMessages" is set to 'false' initially, so this initially passes 'true'.
     inboxToggleButton.addEventListener('click', function (evt) {
@@ -73,8 +73,11 @@ function swapTitle(showDefaultTitle) {
 //called when show/hide button clicked, with current "showMessages" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleMessages(areMessagesVisible) {
 
-    const inboxToggleButtonHtml = document.getElementById('hider__button');
+    const inboxToggleButtonHtml = document.getElementById('hider__hide_inbox');
     inboxToggleButtonHtml.innerHTML = areMessagesVisible ? 'Hide inbox' : 'Show inbox';
+    
+    // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
+    inboxToggleButtonHtml.blur();
     
     if (areMessagesVisible) {
         // show emails

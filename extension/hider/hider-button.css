@@ -2,10 +2,6 @@
 
 #hider__hide_inbox {
     float: left;
-    padding-left: 5px;
-}
-
-#hider__button {
-    padding-top: 2.2px;
-    color: #6a6d76;
+    margin-top: 6px;
+    color: #424447;
 }
