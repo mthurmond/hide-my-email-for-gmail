@@ -5,25 +5,27 @@ let showMessages = false;
 let inboxToggleButton, titleObserver;
 
 function handleHashChange() {
+    // if user viewing inbox, show button, and show/hide emails and toolbar
     if (location.hash === '#inbox') {
-        // display button
+        // show button
         inboxToggleButton.style.display = 'flex';
         
-        // if user navigates to inbox and messages are hidden, hide the main body
         if (showMessages) {
+            // show emails and toolbar 
             document.getElementById(':3').style.visibility = 'visible';
+            document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
         } else {
+            // hide emails and toolbar 
             document.getElementById(':3').style.visibility = 'hidden';
+            document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
         }
 
     } else {
-        //hide button
+        //if user not viewing inbox, hide button, and show emails and toolbar
         inboxToggleButton.style.display = "none";
-        //display main body
         document.getElementById(':3').style.visibility = 'visible';
-
+        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
     }
-
 }
 
 function addToggleButton() {
@@ -74,12 +76,18 @@ function toggleMessages(areMessagesVisible) {
     const inboxToggleButtonHtml = document.getElementById('hider__button');
     inboxToggleButtonHtml.innerHTML = areMessagesVisible ? 'Hide inbox' : 'Show inbox';
     
-    //show/hide main body
     if (areMessagesVisible) {
+        // show emails
         document.getElementById(':3').style.visibility = 'visible';
-    } else {
+        // show action buttons
+        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
+
+    } else if (!areMessagesVisible && location.hash === '#inbox') {
+        // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
-    }
+        // hide action buttons
+        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
+        }
 
     // show/hide inbox message badges
     // remove prior styles
@@ -121,7 +129,8 @@ function initiateHider() {
 //continuously check if the required elements exist. once they do, stop checking and call the appropriate function. 
 const checkForElements = setInterval(function () {
     if (
-        document.getElementById(':4') 
+        // document.getElementById(':4')
+        document.querySelector("div#\\:4 [gh='tm']")
         && document.title.length > 0
     ) {
         clearInterval(checkForElements);
