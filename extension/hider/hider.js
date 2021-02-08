@@ -52,17 +52,21 @@ function addToggleButton() {
 
 }
 
-function swapTitle(showDefaultTitle) {
+function swapTitle(areMessagesVisible) {
 
-    if (showDefaultTitle) {
+    if (areMessagesVisible) {
         document.title = 'Gmail';
         //remove the mutation observer
         titleObserver.disconnect();
     } else {
-        document.title = 'Inbox hidden';
+        // wrap in if statement in case user initially loads gmail on non-inbox view
+        if (location.hash === '#inbox') {
+            document.title = 'Inbox hidden';
+        }
+
         //activate the mutation observer
         titleObserver = new MutationObserver(function(mutations) {
-            if (!showMessages && document.title != 'Inbox hidden') {
+            if (!showMessages && location.hash === '#inbox' && document.title != 'Inbox hidden') {
                 document.title = 'Inbox hidden';
             } 
         });
