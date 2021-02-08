@@ -43,9 +43,13 @@ function addToggleButton() {
     const buttonToolbar = document.getElementById(':4');
     buttonToolbar.prepend(inboxToggleButton);
 
-    // //if user navigates to different hash, don't displaying button
-    // window.addEventListener('hashchange', handleHashChange);
+    // hides button if user loads a gmail URL that doesn't have the inbox hash
+    if (location.hash !== '#inbox') {
+        inboxToggleButton.style.display = "none";
+    } 
+
     window.onhashchange = handleHashChange;
+
 }
 
 function swapTitle(showDefaultTitle) {
