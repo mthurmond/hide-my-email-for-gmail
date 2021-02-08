@@ -4,9 +4,21 @@ let showMessages = false;
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
+// checks whether the user is viewing their inbox, both with and without a new message box open
+function checkForInboxHash() {
+    let inboxHashBoolean; 
+
+    if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') { 
+        inboxHashBoolean = true;
+    } else {
+        inboxHashBoolean = false;
+    }
+    return inboxHashBoolean
+}
+
 function handleHashChange() {
     // if user viewing inbox, show button, and show/hide emails and toolbar
-    if (location.hash === '#inbox') {
+    if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
         
@@ -44,7 +56,7 @@ function addToggleButton() {
     buttonToolbar.prepend(inboxToggleButton);
 
     // hides button if user loads a gmail URL that doesn't have the inbox hash
-    if (location.hash !== '#inbox') {
+    if (!checkForInboxHash()) {
         inboxToggleButton.style.display = "none";
     } 
 
@@ -60,13 +72,13 @@ function swapTitle(areMessagesVisible) {
         titleObserver.disconnect();
     } else {
         // wrap in if statement in case user initially loads gmail on non-inbox view
-        if (location.hash === '#inbox') {
+        if (checkForInboxHash()) {
             document.title = 'Inbox hidden';
         }
 
         //activate the mutation observer
         titleObserver = new MutationObserver(function(mutations) {
-            if (!showMessages && location.hash === '#inbox' && document.title != 'Inbox hidden') {
+            if (!showMessages && document.title != 'Inbox hidden' && checkForInboxHash()) {
                 document.title = 'Inbox hidden';
             } 
         });
@@ -93,7 +105,7 @@ function toggleMessages(areMessagesVisible) {
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-    } else if (!areMessagesVisible && location.hash === '#inbox') {
+    } else if (!areMessagesVisible && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
         // hide action buttons
