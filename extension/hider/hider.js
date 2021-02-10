@@ -213,5 +213,5 @@ function addInboxMenuEvent() {
 
 // when window loads, call function that reduces inbox flicker
 window.onload = function () {
-    setTimeout(addInboxMenuEvent, 1000);
+    setTimeout(addInboxMenuEvent, 3000);
 }
