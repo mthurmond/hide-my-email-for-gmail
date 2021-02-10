@@ -4,6 +4,21 @@ let showMessages = false;
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
+// add style to be able to toggle inbox menu item font-weight
+// add new style 
+const inboxFontStyle = document.createElement('style');
+inboxFontStyle.classList.add('hider__inbox-font-style');
+
+//create selector
+let inboxUrl = location.protocol+'//'+location.host+location.pathname+'#inbox';
+let inboxUrlString = `'${inboxUrl}'`;
+let inboxAnchorElementSelector = `a[href=${inboxUrlString}]`;
+let inboxAnchorElement = document.querySelector(inboxAnchorElementSelector);
+
+// add style to DOM
+inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { }`;
+document.body.appendChild(inboxFontStyle);
+
 // checks whether the user is viewing their inbox, both with and without a new message box open
 function checkForInboxHash() {
     let inboxHashBoolean; 
@@ -22,6 +37,9 @@ function handleHashChange() {
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
+
+        // if viewing inbox, always bold the inbox menu item
+        inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: bold !important; }`;
         
         if (showMessages) {
             // show emails and toolbar 
@@ -38,6 +56,11 @@ function handleHashChange() {
         inboxToggleButton.style.display = "none";
         document.getElementById(':3').style.visibility = 'visible';
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
+
+        // if messages hidden and not viewing inbox, unbold the inbox menu item
+        if (!showMessages) {
+            inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: normal !important; }`;
+        }
     }
 }
 
@@ -115,9 +138,9 @@ function toggleMessages(areMessagesVisible) {
 
     // show/hide inbox message badges
     // remove prior styles
-    const styleToRemove = document.getElementsByClassName('hider__badge-style')[0];
-    if (styleToRemove) {
-        styleToRemove.remove();
+    const badgeStyleToRemove = document.getElementsByClassName('hider__badge-style')[0];
+    if (badgeStyleToRemove) {
+        badgeStyleToRemove.remove();
     }
 
     // add new style
@@ -133,6 +156,11 @@ function toggleMessages(areMessagesVisible) {
         //remove style
         badgeStyle.innerHTML = ".bsU { display: none !important; }";
         document.body.appendChild(badgeStyle);
+    }
+
+    // unbold the inbox menu item if messages are hidden and the user isn't viewing the inbox
+    if (!areMessagesVisible && location.hash !== '#inbox') {
+        inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: normal !important; }`;
     }
 
     //swap title each time button pressed
