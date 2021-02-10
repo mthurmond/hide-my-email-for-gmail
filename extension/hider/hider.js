@@ -18,6 +18,7 @@ function checkForInboxHash() {
 
 function handleHashChange() {
     // if user viewing inbox, show button, and show/hide emails and toolbar
+
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
@@ -141,22 +142,48 @@ function toggleMessages(areMessagesVisible) {
     showMessages = areMessagesVisible;
 }
 
-//once the required elements exist, this function initiates the slack hider
+// hide inbox body on initial load to avoid flicker
+const checkForInboxBody = setInterval(function () {
+    if (document.getElementById(':3')) {
+        if (location.hash === '#inbox') {
+            document.getElementById(':3').style.visibility = 'hidden';
+        }
+        clearInterval(checkForInboxBody);
+    }
+}, 100);
+
+// start gmail hider by adding the button and hiding the inbox
 function initiateHider() {
     addToggleButton();
-    
+        
     // call this to hide messages by default when slack is first loaded
     toggleMessages(showMessages);
 }
 
-//continuously check if the required elements exist. once they do, stop checking and call the appropriate function. 
-const checkForElements = setInterval(function () {
+// once required elements exist, call the function necessary to load gmail hider
+const checkForAllElements = setInterval(function () {
     if (
-        // document.getElementById(':4')
+        // top nav buttons 
         document.querySelector("div#\\:4 [gh='tm']")
+        // inbox menu item in left sidebar
+        && document.querySelector("div [data-tooltip='Inbox']")
         && document.title.length > 0
     ) {
-        clearInterval(checkForElements);
+        clearInterval(checkForAllElements);
         initiateHider();
     }
 }, 100);
+
+// reduce inbox flicker when user clicks back to inbox menu item
+function addInboxMenuEvent() {
+    document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
+        if (!showMessages) {
+            document.getElementById(':3').style.visibility = 'hidden';
+        }
+    });
+}
+
+// when window loads, call function that reduces inbox flicker
+window.onload = function () {
+    setTimeout(addInboxMenuEvent, 1000);
+}
