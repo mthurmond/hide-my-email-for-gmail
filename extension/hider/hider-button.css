@@ -1,7 +1,17 @@
-/* style the toggle button */
-
+/* style toggle button */
 #hider__hide_inbox {
     float: left;
-    margin-top: 6px;
+    height: 48px;
+    padding-top: 2px;
     color: #424447;
+}
+
+/* remove box shadow from top gmail toolbar  */
+.G-atb::before {
+    box-shadow: none !important;
+}
+
+/* add border to top gmail toolbar to replace box shadow */
+div#\:4 {
+    border-bottom: 1px solid #e5e5e5 !important;
 }
