@@ -6,6 +6,13 @@
     color: #424447;
 }
 
+#hider__hide_inbox:hover::before {
+    margin-left: 2px !important;
+    margin-top: 5px !important;
+    margin-right: 2px !important;
+    margin-bottom: 5px !important;
+}
+
 /* remove box shadow from top gmail toolbar  */
 .G-atb::before {
     box-shadow: none !important;
