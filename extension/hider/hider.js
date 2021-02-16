@@ -91,12 +91,27 @@ function addToggleButton() {
 function swapTitle(areMessagesVisible) {
 
     if (areMessagesVisible) {
-        document.title = 'Gmail';
+        // set doc title to stored value or, if null, to "Gmail"
+        chrome.storage.sync.get(['titleValue'], function (result) {
+            
+            const unreadMessages = document.querySelector('div.bsU').innerHTML;
+
+            if (result.titleValue && result.titleValue != 'Gmail') {    
+                document.title = result.titleValue.replace(/\(([^)]+)\)/, `(${unreadMessages})`);
+                
+            } else {
+                document.title = `Inbox (${unreadMessages}) - Gmail`;
+            }
+            
+        });
+
         //remove the mutation observer
         titleObserver.disconnect();
+
     } else {
         // wrap in if statement in case user initially loads gmail on non-inbox view
         if (checkForInboxHash()) {
+            chrome.storage.sync.set({ 'titleValue': document.title }, function () { });
             document.title = 'Inbox hidden';
         }
 
