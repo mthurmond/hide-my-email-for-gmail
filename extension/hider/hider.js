@@ -87,14 +87,17 @@ function swapTitle(areMessagesVisible) {
     if (areMessagesVisible) {
         // set doc title to stored value or, if null, to "Gmail"
         chrome.storage.sync.get(['titleValue'], function (result) {
-            
-            const unreadMessages = document.querySelector('div.bsU').innerHTML;
+        
+            // store unread messages. if none, div will not be in dom, so store '0'.
+            let unreadEmails = document.querySelector('div.bsU') ? document.querySelector('div.bsU').innerHTML : '0';
 
             if (result.titleValue && result.titleValue != 'Gmail') {    
-                document.title = result.titleValue.replace(/\(([^)]+)\)/, `(${unreadMessages})`);
-                
+                // if actual title was stored when messages were hidden, apply it and swap in the latest unread email count  
+                document.title = result.titleValue.replace(/\(([^)]+)\)/, `(${unreadEmails})`);
+              
             } else {
-                document.title = `Inbox (${unreadMessages}) - Gmail`;
+                // if the actual title wasn't stored when messages were hidden, apply a standard title with the latest unread email count
+                document.title = `Inbox (${unreadEmails}) - Gmail`;
             }
             
         });
