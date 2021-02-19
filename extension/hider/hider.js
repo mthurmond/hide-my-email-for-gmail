@@ -10,10 +10,10 @@ let inboxMenuSelector = `a[href='${location.protocol+'//'+location.host+location
 // add style to DOM
 const inboxFontStyle = document.createElement('style');
 inboxFontStyle.classList.add('hider__inbox-font-style');
-inboxFontStyle.innerHTML = ` `;
+inboxFontStyle.innerHTML = '';
 document.body.appendChild(inboxFontStyle);
 
-// checks whether the user is viewing their inbox, both with and without a new message box open
+// check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
     let inboxHashBoolean; 
 
@@ -26,33 +26,38 @@ function checkForInboxHash() {
 }
 
 function handleHashChange() {
-    // if user viewing inbox, show button, and show/hide emails and toolbar
-
     // remove custom inbox menu styling
     inboxFontStyle.innerHTML = '';
 
+    // if user is viewing inbox
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
 
         if (showInbox) {
-            // show emails and toolbar 
+            // show emails 
             document.getElementById(':3').style.visibility = 'visible';
+            // show toolbar
             document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
         } else {
-            // hide emails and toolbar
+            // hide emails
             document.getElementById(':3').style.visibility = 'hidden';
+            // hide toolbar
             document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
         }
 
+    // if user isn't viewing inbox
     } else {
-        //if user not viewing inbox, hide button, and show emails and toolbar
+        // hide button
         inboxToggleButton.style.display = "none";
+        // show emails
         document.getElementById(':3').style.visibility = 'visible';
+        // show toolbar
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
+        // if inbox is hidden
         if (!showInbox) {
-            // if user not viewing inbox and messages hidden, unbold the inbox menu
+            // unbold the inbox menu
             inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
         }
     }
@@ -64,16 +69,16 @@ function addToggleButton() {
     inboxToggleButton.classList.add('GN', 'GW');
     inboxToggleButton.innerHTML = 'Show inbox';
 
-    //add listener that calls "toggleMessages" when button clicked, and passes opposite of current "showInbox" boolean value. "showInbox" is set to 'false' initially, so this initially passes 'true'.
+    //add listener that calls "toggleInbox" when button clicked, and passes opposite of current "showInbox" boolean value. "showInbox" is set to 'false' initially, so this initially passes 'true'.
     inboxToggleButton.addEventListener('click', function (evt) {
-        toggleMessages(!showInbox);
+        toggleInbox(!showInbox);
     });
 
     //store gmail button toolbar in a variable
     const buttonToolbar = document.getElementById(':4');
     buttonToolbar.prepend(inboxToggleButton);
 
-    // hides button if user loads a gmail URL that doesn't have the inbox hash
+    // hide button if user initially loads a page other than the inbox
     if (!checkForInboxHash()) {
         inboxToggleButton.style.display = "none";
     } 
@@ -82,9 +87,9 @@ function addToggleButton() {
 
 }
 
-function swapTitle(areMessagesVisible) {
+function swapTitle(isInboxVisible) {
 
-    if (areMessagesVisible) {
+    if (isInboxVisible) {
         // set doc title to stored value or, if null, to "Gmail"
         chrome.storage.sync.get(['titleValue'], function (result) {
         
@@ -127,21 +132,21 @@ function swapTitle(areMessagesVisible) {
 }
 
 //called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
-function toggleMessages(areMessagesVisible) {
+function toggleInbox(isInboxVisible) {
 
     const inboxToggleButtonHtml = document.getElementById('hider__hide_inbox');
-    inboxToggleButtonHtml.innerHTML = areMessagesVisible ? 'Hide inbox' : 'Show inbox';
+    inboxToggleButtonHtml.innerHTML = isInboxVisible ? 'Hide inbox' : 'Show inbox';
     
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButtonHtml.blur();
     
-    if (areMessagesVisible) {
+    if (isInboxVisible) {
         // show emails
         document.getElementById(':3').style.visibility = 'visible';
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-    } else if (!areMessagesVisible && checkForInboxHash()) {
+    } else if (!isInboxVisible && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
         // hide action buttons
@@ -159,7 +164,7 @@ function toggleMessages(areMessagesVisible) {
     const badgeStyle = document.createElement('style');
     badgeStyle.classList.add('hider__badge-style');
 
-    if (areMessagesVisible) {
+    if (isInboxVisible) {
         //add style
         badgeStyle.innerHTML = ".bsU { display: flex; }";
         document.body.appendChild(badgeStyle);
@@ -171,15 +176,15 @@ function toggleMessages(areMessagesVisible) {
     }
 
     // unbold the inbox menu item if messages are hidden and the user isn't viewing the inbox
-    if (!areMessagesVisible && location.hash !== '#inbox') {
+    if (!isInboxVisible && location.hash !== '#inbox') {
         inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
     }
 
     //swap title each time button pressed
-    swapTitle(areMessagesVisible)
+    swapTitle(isInboxVisible)
 
-    //set showInbox equal to its new, opposite value since areMessagesVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
-    showInbox = areMessagesVisible;
+    //set showInbox equal to its new, opposite value since isInboxVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
+    showInbox = isInboxVisible;
 }
 
 // hide inbox body on initial load to avoid flicker
@@ -197,7 +202,7 @@ function initiateHider() {
     addToggleButton();
         
     // call this to hide messages by default when slack is first loaded
-    toggleMessages(showInbox);
+    toggleInbox(showInbox);
 }
 
 // once required elements exist, call the function necessary to load gmail hider
