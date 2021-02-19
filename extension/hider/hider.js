@@ -4,18 +4,12 @@ let showMessages = false;
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
-// add style to be able to toggle inbox menu item font-weight
-// add new style 
+// add style to toggle inbox menu item font-weight
+//create selector, get inbox URL and convert it to string 
+let inboxAnchorElementSelector = `a[href='${location.protocol+'//'+location.host+location.pathname+'#inbox'}']`;
+// add style to DOM
 const inboxFontStyle = document.createElement('style');
 inboxFontStyle.classList.add('hider__inbox-font-style');
-
-//create selector
-let inboxUrl = location.protocol+'//'+location.host+location.pathname+'#inbox';
-let inboxUrlString = `'${inboxUrl}'`;
-let inboxAnchorElementSelector = `a[href=${inboxUrlString}]`;
-let inboxAnchorElement = document.querySelector(inboxAnchorElementSelector);
-
-// add style to DOM
 inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { }`;
 document.body.appendChild(inboxFontStyle);
 
@@ -34,19 +28,19 @@ function checkForInboxHash() {
 function handleHashChange() {
     // if user viewing inbox, show button, and show/hide emails and toolbar
 
+    // remove custom inbox menu styling
+    inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { }`;
+
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
 
-        // if viewing inbox, always bold the inbox menu item
-        inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: bold !important; }`;
-        
         if (showMessages) {
             // show emails and toolbar 
             document.getElementById(':3').style.visibility = 'visible';
             document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
         } else {
-            // hide emails and toolbar 
+            // hide emails and toolbar
             document.getElementById(':3').style.visibility = 'hidden';
             document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
         }
@@ -57,8 +51,8 @@ function handleHashChange() {
         document.getElementById(':3').style.visibility = 'visible';
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        // if messages hidden and not viewing inbox, unbold the inbox menu item
         if (!showMessages) {
+            // if user not viewing inbox and messages hidden, unbold the inbox menu
             inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: normal !important; }`;
         }
     }
