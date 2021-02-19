@@ -1,16 +1,16 @@
 //create flag to control whether inbox should be hidden. set value to true and remove initial toggleInbox function call to show inbox by default. set to false and include an initial toggleInbox call to hide inbox by default.
-let showMessages = false;
+let showInbox = false;
 
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
 // add style to toggle inbox menu item font-weight
 //create selector, get inbox URL and convert it to string 
-let inboxAnchorElementSelector = `a[href='${location.protocol+'//'+location.host+location.pathname+'#inbox'}']`;
+let inboxMenuSelector = `a[href='${location.protocol+'//'+location.host+location.pathname+'#inbox'}']`;
 // add style to DOM
 const inboxFontStyle = document.createElement('style');
 inboxFontStyle.classList.add('hider__inbox-font-style');
-inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { }`;
+inboxFontStyle.innerHTML = ` `;
 document.body.appendChild(inboxFontStyle);
 
 // checks whether the user is viewing their inbox, both with and without a new message box open
@@ -29,13 +29,13 @@ function handleHashChange() {
     // if user viewing inbox, show button, and show/hide emails and toolbar
 
     // remove custom inbox menu styling
-    inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { }`;
+    inboxFontStyle.innerHTML = '';
 
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
 
-        if (showMessages) {
+        if (showInbox) {
             // show emails and toolbar 
             document.getElementById(':3').style.visibility = 'visible';
             document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
@@ -51,9 +51,9 @@ function handleHashChange() {
         document.getElementById(':3').style.visibility = 'visible';
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        if (!showMessages) {
+        if (!showInbox) {
             // if user not viewing inbox and messages hidden, unbold the inbox menu
-            inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: normal !important; }`;
+            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
         }
     }
 }
@@ -64,9 +64,9 @@ function addToggleButton() {
     inboxToggleButton.classList.add('GN', 'GW');
     inboxToggleButton.innerHTML = 'Show inbox';
 
-    //add listener that calls "toggleMessages" when button clicked, and passes opposite of current "showMessages" boolean value. "showMessages" is set to 'false' initially, so this initially passes 'true'.
+    //add listener that calls "toggleMessages" when button clicked, and passes opposite of current "showInbox" boolean value. "showInbox" is set to 'false' initially, so this initially passes 'true'.
     inboxToggleButton.addEventListener('click', function (evt) {
-        toggleMessages(!showMessages);
+        toggleMessages(!showInbox);
     });
 
     //store gmail button toolbar in a variable
@@ -114,7 +114,7 @@ function swapTitle(areMessagesVisible) {
 
         //activate the mutation observer
         titleObserver = new MutationObserver(function(mutations) {
-            if (!showMessages && document.title != 'Inbox hidden' && checkForInboxHash()) {
+            if (!showInbox && document.title != 'Inbox hidden' && checkForInboxHash()) {
                 document.title = 'Inbox hidden';
             } 
         });
@@ -126,7 +126,7 @@ function swapTitle(areMessagesVisible) {
     }
 }
 
-//called when show/hide button clicked, with current "showMessages" boolean value. clicking the button adjusts the sidebar visibility and button text.  
+//called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleMessages(areMessagesVisible) {
 
     const inboxToggleButtonHtml = document.getElementById('hider__hide_inbox');
@@ -172,14 +172,14 @@ function toggleMessages(areMessagesVisible) {
 
     // unbold the inbox menu item if messages are hidden and the user isn't viewing the inbox
     if (!areMessagesVisible && location.hash !== '#inbox') {
-        inboxFontStyle.innerHTML = `${inboxAnchorElementSelector} { font-weight: normal !important; }`;
+        inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
     }
 
     //swap title each time button pressed
     swapTitle(areMessagesVisible)
 
-    //set showMessages equal to its new, opposite value since areMessagesVisible was set to "!showMessages" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
-    showMessages = areMessagesVisible;
+    //set showInbox equal to its new, opposite value since areMessagesVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
+    showInbox = areMessagesVisible;
 }
 
 // hide inbox body on initial load to avoid flicker
@@ -197,7 +197,7 @@ function initiateHider() {
     addToggleButton();
         
     // call this to hide messages by default when slack is first loaded
-    toggleMessages(showMessages);
+    toggleMessages(showInbox);
 }
 
 // once required elements exist, call the function necessary to load gmail hider
@@ -217,7 +217,7 @@ const checkForAllElements = setInterval(function () {
 // reduce inbox flicker when user clicks back to inbox menu item
 function addInboxMenuEvent() {
     document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
-        if (!showMessages) {
+        if (!showInbox) {
             document.getElementById(':3').style.visibility = 'hidden';
         }
     });
