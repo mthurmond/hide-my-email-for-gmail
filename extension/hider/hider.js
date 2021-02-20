@@ -15,14 +15,11 @@ document.body.appendChild(inboxFontStyle);
 
 // check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
-    let inboxHashBoolean; 
-
     if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') { 
-        inboxHashBoolean = true;
+        return true;
     } else {
-        inboxHashBoolean = false;
+        return false;
     }
-    return inboxHashBoolean
 }
 
 function handleHashChange() {
