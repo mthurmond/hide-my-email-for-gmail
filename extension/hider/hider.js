@@ -1,4 +1,4 @@
-//create flag to control whether inbox should be hidden. set value to true and remove initial toggleInbox function call to show inbox by default. set to false and include an initial toggleInbox call to hide inbox by default.
+// create flag to control whether inbox should be hidden. set value to true and remove initial toggleInbox function call to show inbox by default. set to false and include an initial toggleInbox call to hide inbox by default.
 let showInbox = false;
 
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
@@ -6,7 +6,7 @@ let inboxToggleButton, titleObserver;
 
 // add style to toggle inbox menu item font-weight
 //create selector, get inbox URL and convert it to string 
-let inboxMenuSelector = `a[href='${location.protocol+'//'+location.host+location.pathname+'#inbox'}']`;
+let inboxMenuSelector = `a[href='${location.protocol + '//' + location.host + location.pathname + '#inbox'}']`;
 // add style to DOM
 const inboxFontStyle = document.createElement('style');
 inboxFontStyle.classList.add('hider__inbox-font-style');
@@ -15,7 +15,7 @@ document.body.appendChild(inboxFontStyle);
 
 // check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
-    if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') { 
+    if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') {
         return true;
     } else {
         return false;
@@ -78,7 +78,7 @@ function addToggleButton() {
     // hide button if user initially loads a page other than the inbox
     if (!checkForInboxHash()) {
         inboxToggleButton.style.display = "none";
-    } 
+    }
 
     window.onhashchange = handleHashChange;
 
@@ -89,22 +89,22 @@ function swapTitle(isInboxVisible) {
     if (isInboxVisible) {
         // set doc title to stored value or, if null, to "Gmail"
         chrome.storage.sync.get(['titleText'], function (result) {
-        
+
             // store unread messages. if none, div will not be in dom, so store '0'.
             let unreadEmailCount = document.querySelector('div.bsU') ? document.querySelector('div.bsU').innerHTML : '0';
 
-            if (result.titleText && result.titleText != 'Gmail') {    
+            if (result.titleText && result.titleText != 'Gmail') {
                 // if actual title was stored when messages were hidden, apply it and swap in the latest unread email count  
                 document.title = result.titleText.replace(/\(([^)]+)\)/, `(${unreadEmailCount})`);
-              
+
             } else {
                 // if the actual title wasn't stored when messages were hidden, apply a standard title with the latest unread email count
                 document.title = `Inbox (${unreadEmailCount}) - Gmail`;
             }
-            
+
         });
 
-        //remove the mutation observer
+        // remove the mutation observer
         titleObserver.disconnect();
 
     } else {
@@ -114,11 +114,11 @@ function swapTitle(isInboxVisible) {
             document.title = 'Inbox hidden';
         }
 
-        //activate the mutation observer
-        titleObserver = new MutationObserver(function(mutations) {
+        // activate the mutation observer
+        titleObserver = new MutationObserver(function (mutations) {
             if (!showInbox && document.title != 'Inbox hidden' && checkForInboxHash()) {
                 document.title = 'Inbox hidden';
-            } 
+            }
         });
 
         titleObserver.observe(
@@ -128,28 +128,28 @@ function swapTitle(isInboxVisible) {
     }
 }
 
-//called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
+// called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleInbox(isInboxVisible) {
 
     const inboxToggleButtonHtml = document.getElementById('hider__hide_inbox');
     inboxToggleButtonHtml.innerHTML = isInboxVisible ? 'Hide inbox' : 'Show inbox';
-    
+
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButtonHtml.blur();
-    
+
     if (isInboxVisible) {
         // show emails
         document.getElementById(':3').style.visibility = 'visible';
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
-    
-    // if inbox hidden and not viewing inbox
+
+        // if inbox hidden and not viewing inbox
     } else if (!isInboxVisible && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
         // hide action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
-        }
+    }
 
     // show/hide inbox message badges
     // remove prior styles
@@ -178,10 +178,10 @@ function toggleInbox(isInboxVisible) {
         inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
     }
 
-    //swap title each time button pressed
+    // swap title each time button pressed
     swapTitle(isInboxVisible)
 
-    //set showInbox equal to its new, opposite value since isInboxVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
+    // set showInbox equal to its new, opposite value since isInboxVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
     showInbox = isInboxVisible;
 }
 
@@ -198,7 +198,7 @@ const checkForInboxBody = setInterval(function () {
 // start gmail hider by adding the button and hiding the inbox
 function initiateHider() {
     addToggleButton();
-        
+
     // call this to hide messages by default when slack is first loaded
     toggleInbox(showInbox);
 }
