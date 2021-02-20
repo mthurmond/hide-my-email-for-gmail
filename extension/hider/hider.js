@@ -91,18 +91,18 @@ function swapTitle(isInboxVisible) {
 
     if (isInboxVisible) {
         // set doc title to stored value or, if null, to "Gmail"
-        chrome.storage.sync.get(['titleValue'], function (result) {
+        chrome.storage.sync.get(['titleText'], function (result) {
         
             // store unread messages. if none, div will not be in dom, so store '0'.
-            let unreadEmails = document.querySelector('div.bsU') ? document.querySelector('div.bsU').innerHTML : '0';
+            let unreadEmailCount = document.querySelector('div.bsU') ? document.querySelector('div.bsU').innerHTML : '0';
 
-            if (result.titleValue && result.titleValue != 'Gmail') {    
+            if (result.titleText && result.titleText != 'Gmail') {    
                 // if actual title was stored when messages were hidden, apply it and swap in the latest unread email count  
-                document.title = result.titleValue.replace(/\(([^)]+)\)/, `(${unreadEmails})`);
+                document.title = result.titleText.replace(/\(([^)]+)\)/, `(${unreadEmailCount})`);
               
             } else {
                 // if the actual title wasn't stored when messages were hidden, apply a standard title with the latest unread email count
-                document.title = `Inbox (${unreadEmails}) - Gmail`;
+                document.title = `Inbox (${unreadEmailCount}) - Gmail`;
             }
             
         });
@@ -113,7 +113,7 @@ function swapTitle(isInboxVisible) {
     } else {
         // wrap in if statement in case user initially loads gmail on non-inbox view
         if (checkForInboxHash()) {
-            chrome.storage.sync.set({ 'titleValue': document.title }, function () { });
+            chrome.storage.sync.set({ 'titleText': document.title }, function () { });
             document.title = 'Inbox hidden';
         }
 
@@ -145,7 +145,8 @@ function toggleInbox(isInboxVisible) {
         document.getElementById(':3').style.visibility = 'visible';
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
-
+    
+    // if inbox hidden and not viewing inbox
     } else if (!isInboxVisible && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
