@@ -77,11 +77,6 @@ function addToggleButton() {
     const buttonToolbar = document.getElementById(':4');
     buttonToolbar.prepend(inboxToggleButton);
 
-    // hide button if user initially loads a page other than the inbox
-    if (!checkForInboxHash()) {
-        inboxToggleButton.style.display = "none";
-    }
-
     window.onhashchange = handleHashChange;
 
 }
@@ -110,11 +105,8 @@ function swapTitle(showInbox) {
         titleObserver.disconnect();
 
     } else {
-        // wrap in if statement in case user initially loads gmail on non-inbox view
-        if (checkForInboxHash()) {
-            chrome.storage.sync.set({ 'titleText': document.title }, function () { });
-            document.title = 'Inbox hidden';
-        }
+        chrome.storage.sync.set({ 'titleText': document.title }, function () { });
+        document.title = 'Inbox hidden';
 
         // activate the mutation observer
         titleObserver = new MutationObserver(function (mutations) {
@@ -145,8 +137,7 @@ function toggleInbox(showInbox) {
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        // if inbox hidden and user isn't viewing inbox
-    } else if (!showInbox && checkForInboxHash()) {
+    } else if (!showInbox) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
         // hide action buttons
@@ -175,11 +166,6 @@ function toggleInbox(showInbox) {
         document.body.appendChild(badgeStyle);
     }
 
-    // unbold the inbox menu item if messages are hidden and the user isn't viewing the inbox
-    if (!showInbox && location.hash !== '#inbox') {
-        inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
-    }
-
     // swap title each time button pressed
     swapTitle(showInbox)
 
@@ -206,11 +192,14 @@ function initiateHider() {
 // once required elements exist, call the function necessary to load gmail hider
 const checkForStartConditions = setInterval(function () {
     if (
-        // top nav buttons 
+        // top nav buttons loaded
         document.querySelector("div#\\:4 [gh='tm']")
-        // inbox menu item in left sidebar
+        // inbox menu item loaded
         && document.querySelector("div [data-tooltip='Inbox']")
+        // title loaded
         && document.title.length > 0
+        // user is viewing inbox
+        && checkForInboxHash()
     ) {
         clearInterval(checkForStartConditions);
         initiateHider();
