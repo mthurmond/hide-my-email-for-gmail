@@ -52,7 +52,7 @@ function handleHashChange() {
         // show toolbar
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        // if inbox is hidden
+        // if inbox is meant to be hidden
         if (!showInbox) {
             // unbold the inbox menu
             inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
@@ -66,9 +66,11 @@ function addToggleButton() {
     inboxToggleButton.classList.add('GN', 'GW');
     inboxToggleButton.innerHTML = 'Show inbox';
 
-    //add listener that calls "toggleInbox" when button clicked, and passes opposite of current "showInbox" boolean value. "showInbox" is set to 'false' initially, so this initially passes 'true'.
+    // call "toggleInbox" when button is clicked
     inboxToggleButton.addEventListener('click', function (evt) {
-        toggleInbox(!showInbox);
+        // flip the showInbox boolean to change the inbox state from it's prior state
+        showInbox = !showInbox;
+        toggleInbox(showInbox);
     });
 
     //store gmail button toolbar in a variable
@@ -84,9 +86,9 @@ function addToggleButton() {
 
 }
 
-function swapTitle(isInboxVisible) {
+function swapTitle(showInbox) {
 
-    if (isInboxVisible) {
+    if (showInbox) {
         // set doc title to stored value or, if null, to "Gmail"
         chrome.storage.sync.get(['titleText'], function (result) {
 
@@ -129,22 +131,22 @@ function swapTitle(isInboxVisible) {
 }
 
 // called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
-function toggleInbox(isInboxVisible) {
+function toggleInbox(showInbox) {
 
     const inboxToggleButton = document.getElementById('hider__hide_inbox');
-    inboxToggleButton.innerHTML = isInboxVisible ? 'Hide inbox' : 'Show inbox';
+    inboxToggleButton.innerHTML = showInbox ? 'Hide inbox' : 'Show inbox';
 
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButton.blur();
 
-    if (isInboxVisible) {
+    if (showInbox) {
         // show emails
         document.getElementById(':3').style.visibility = 'visible';
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
         // if inbox hidden and user isn't viewing inbox
-    } else if (!isInboxVisible && checkForInboxHash()) {
+    } else if (!showInbox && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
         // hide action buttons
@@ -162,7 +164,7 @@ function toggleInbox(isInboxVisible) {
     const badgeStyle = document.createElement('style');
     badgeStyle.classList.add('hider__badge-style');
 
-    if (isInboxVisible) {
+    if (showInbox) {
         //add style
         badgeStyle.innerHTML = ".bsU { display: flex; }";
         document.body.appendChild(badgeStyle);
@@ -174,15 +176,13 @@ function toggleInbox(isInboxVisible) {
     }
 
     // unbold the inbox menu item if messages are hidden and the user isn't viewing the inbox
-    if (!isInboxVisible && location.hash !== '#inbox') {
+    if (!showInbox && location.hash !== '#inbox') {
         inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
     }
 
     // swap title each time button pressed
-    swapTitle(isInboxVisible)
+    swapTitle(showInbox)
 
-    // set showInbox equal to its new, opposite value since isInboxVisible was set to "!showInbox" in the click event handler. the new value must be stored in this global variable so it persists in the browser's memory, gets attached to the 'window' object, and has the correct updated value next time the button is clicked.
-    showInbox = isInboxVisible;
 }
 
 // hide inbox on initial load to avoid flicker
@@ -199,7 +199,7 @@ const checkForInbox = setInterval(function () {
 function initiateHider() {
     addToggleButton();
 
-    // call this to hide messages by default when slack is first loaded
+    // hide messages by default when gmail first loads
     toggleInbox(showInbox);
 }
 
