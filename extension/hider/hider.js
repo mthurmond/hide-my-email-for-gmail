@@ -131,11 +131,11 @@ function swapTitle(isInboxVisible) {
 // called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleInbox(isInboxVisible) {
 
-    const inboxToggleButtonHtml = document.getElementById('hider__hide_inbox');
-    inboxToggleButtonHtml.innerHTML = isInboxVisible ? 'Hide inbox' : 'Show inbox';
+    const inboxToggleButton = document.getElementById('hider__hide_inbox');
+    inboxToggleButton.innerHTML = isInboxVisible ? 'Hide inbox' : 'Show inbox';
 
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
-    inboxToggleButtonHtml.blur();
+    inboxToggleButton.blur();
 
     if (isInboxVisible) {
         // show emails
@@ -143,7 +143,7 @@ function toggleInbox(isInboxVisible) {
         // show action buttons
         document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        // if inbox hidden and not viewing inbox
+        // if inbox hidden and user isn't viewing inbox
     } else if (!isInboxVisible && checkForInboxHash()) {
         // hide emails
         document.getElementById(':3').style.visibility = 'hidden';
@@ -185,13 +185,13 @@ function toggleInbox(isInboxVisible) {
     showInbox = isInboxVisible;
 }
 
-// hide inbox body on initial load to avoid flicker
-const checkForInboxBody = setInterval(function () {
+// hide inbox on initial load to avoid flicker
+const checkForInbox = setInterval(function () {
     if (document.getElementById(':3')) {
         if (location.hash === '#inbox') {
             document.getElementById(':3').style.visibility = 'hidden';
         }
-        clearInterval(checkForInboxBody);
+        clearInterval(checkForInbox);
     }
 }, 100);
 
@@ -204,7 +204,7 @@ function initiateHider() {
 }
 
 // once required elements exist, call the function necessary to load gmail hider
-const checkForAllElements = setInterval(function () {
+const checkForStartConditions = setInterval(function () {
     if (
         // top nav buttons 
         document.querySelector("div#\\:4 [gh='tm']")
@@ -212,7 +212,7 @@ const checkForAllElements = setInterval(function () {
         && document.querySelector("div [data-tooltip='Inbox']")
         && document.title.length > 0
     ) {
-        clearInterval(checkForAllElements);
+        clearInterval(checkForStartConditions);
         initiateHider();
     }
 }, 100);
@@ -226,7 +226,7 @@ function addInboxMenuEvent() {
     });
 }
 
-// when window loads, call function that reduces inbox flicker
+// shortly after window loads, call function that reduces inbox flicker
 window.onload = function () {
     setTimeout(addInboxMenuEvent, 3000);
 }
