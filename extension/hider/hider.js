@@ -13,6 +13,15 @@ inboxFontStyle.classList.add('hider__inbox-font-style');
 inboxFontStyle.innerHTML = '';
 document.body.appendChild(inboxFontStyle);
 
+function changeTableVisibility(desiredVisibility) {
+
+    // change emails table visibility
+    document.getElementById(':3').style.visibility = desiredVisibility;
+    // change table toolbar visibility
+    document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+
+}
+
 // check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
     if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') {
@@ -26,36 +35,27 @@ function handleHashChange() {
     // remove custom inbox menu styling
     inboxFontStyle.innerHTML = '';
 
+    // store correct visibility value based on whether the inbox is hidden
+    const visibilityValue = showInbox ? 'visible' : 'hidden';
+
     // if user is viewing inbox
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
-
-        if (showInbox) {
-            // show emails 
-            document.getElementById(':3').style.visibility = 'visible';
-            // show toolbar
-            document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
-        } else {
-            // hide emails
-            document.getElementById(':3').style.visibility = 'hidden';
-            // hide toolbar
-            document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
-        }
+        // flip emails table and toolbar visibility
+        changeTableVisibility(visibilityValue);
 
     // if user isn't viewing inbox
     } else {
         // hide button
         inboxToggleButton.style.display = "none";
-        // show emails
-        document.getElementById(':3').style.visibility = 'visible';
-        // show toolbar
-        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
 
-        // if inbox is meant to be hidden
+        changeTableVisibility('visible');
+
+        // if user isn't viewing inbox and inbox is hidden
         if (!showInbox) {
             // unbold the inbox menu
-            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
+            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;            
         }
     }
 }
@@ -124,25 +124,14 @@ function swapTitle(showInbox) {
 
 // called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleInbox(showInbox) {
-
-    const inboxToggleButton = document.getElementById('hider__hide_inbox');
     inboxToggleButton.innerHTML = showInbox ? 'Hide inbox' : 'Show inbox';
 
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButton.blur();
 
-    if (showInbox) {
-        // show emails
-        document.getElementById(':3').style.visibility = 'visible';
-        // show action buttons
-        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "visible";
-
-    } else if (!showInbox) {
-        // hide emails
-        document.getElementById(':3').style.visibility = 'hidden';
-        // hide action buttons
-        document.querySelector("div#\\:4 [gh='tm']").style.visibility = "hidden";
-    }
+    // flip visibility of emails table and toolbar
+    const visibilityValue = showInbox ? 'visible' : 'hidden';
+    changeTableVisibility(visibilityValue);
 
     // show/hide inbox message badges
     // remove prior styles
