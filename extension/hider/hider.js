@@ -4,14 +4,19 @@ let showInbox = false;
 //declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
-// add style to toggle inbox menu item font-weight
-//create selector, get inbox URL and convert it to string 
-let inboxMenuSelector = `a[href='${location.protocol + '//' + location.host + location.pathname + '#inbox'}']`;
-// add style to DOM
+// add styles -->
+// add inbox menu item font-weight style
 const inboxFontStyle = document.createElement('style');
 inboxFontStyle.classList.add('hider__inbox-font-style');
-inboxFontStyle.innerHTML = '';
 document.body.appendChild(inboxFontStyle);
+// create variable for selector since it requires pulling the URL to find the 'inbox' anchor element
+const inboxMenuSelector = `a[href='${location.protocol + '//' + location.host + location.pathname + '#inbox'}']`;
+
+// add unread email badge style
+const emailBadgeStyle = document.createElement('style');
+emailBadgeStyle.classList.add('hider__badge-style');
+document.body.appendChild(emailBadgeStyle);
+
 
 function changeTableVisibility(desiredVisibility) {
 
@@ -49,7 +54,6 @@ function handleHashChange() {
     } else {
         // hide button
         inboxToggleButton.style.display = "none";
-
         changeTableVisibility('visible');
 
         // if user isn't viewing inbox and inbox is hidden
@@ -133,27 +137,9 @@ function toggleInbox(showInbox) {
     const visibilityValue = showInbox ? 'visible' : 'hidden';
     changeTableVisibility(visibilityValue);
 
-    // show/hide inbox message badges
-    // remove prior styles
-    const badgeStyleToRemove = document.getElementsByClassName('hider__badge-style')[0];
-    if (badgeStyleToRemove) {
-        badgeStyleToRemove.remove();
-    }
-
-    // add new style
-    const badgeStyle = document.createElement('style');
-    badgeStyle.classList.add('hider__badge-style');
-
-    if (showInbox) {
-        //add style
-        badgeStyle.innerHTML = ".bsU { display: flex; }";
-        document.body.appendChild(badgeStyle);
-
-    } else {
-        //remove style
-        badgeStyle.innerHTML = ".bsU { display: none !important; }";
-        document.body.appendChild(badgeStyle);
-    }
+    // flip display of unread email badge 
+    const displayValue = showInbox ? 'flex' : 'none !important'
+    emailBadgeStyle.innerHTML = `.bsU { display: ${displayValue}; }`;
 
     // swap title each time button pressed
     swapTitle(showInbox)
