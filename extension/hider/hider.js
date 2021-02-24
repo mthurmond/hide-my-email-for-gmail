@@ -1,7 +1,7 @@
 // create flag to control whether inbox should be hidden. set value to true and remove initial toggleInbox function call to show inbox by default. set to false and include an initial toggleInbox call to hide inbox by default.
 let showInbox = false;
 
-//declare global variables. toggle button needs to be global because it's used in multiple functions. title variable is used in a mutation observer and needs to be tracked over time. 
+// declare these as global since inboxToggleButton is used in multiple functions and titleObserver is used in the mutation observer and needs to be tracked over time. 
 let inboxToggleButton, titleObserver;
 
 // add styles -->
@@ -14,7 +14,7 @@ const inboxMenuSelector = `a[href='${location.protocol + '//' + location.host + 
 
 // add unread email badge style
 const emailBadgeStyle = document.createElement('style');
-emailBadgeStyle.classList.add('hider__badge-style');
+emailBadgeStyle.classList.add('hider__email-badge-style');
 document.body.appendChild(emailBadgeStyle);
 
 
@@ -66,7 +66,7 @@ function handleHashChange() {
 
 function addToggleButton() {
     inboxToggleButton = document.createElement('button');
-    inboxToggleButton.id = 'hider__hide_inbox';
+    inboxToggleButton.id = 'hider__toggle-button';
     inboxToggleButton.classList.add('GN', 'GW');
     inboxToggleButton.innerHTML = 'Show inbox';
 

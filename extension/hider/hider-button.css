@@ -1,12 +1,12 @@
 /* style toggle button */
-#hider__hide_inbox {
+#hider__toggle-button {
     float: left;
     height: 48px;
     padding-top: 2px;
     color: #424447;
 }
 
-#hider__hide_inbox:hover::before {
+#hider__toggle-button:hover::before {
     margin-left: 2px !important;
     margin-top: 5px !important;
     margin-right: 2px !important;
