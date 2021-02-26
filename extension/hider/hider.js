@@ -17,16 +17,6 @@ const emailBadgeStyle = document.createElement('style');
 emailBadgeStyle.classList.add('hider__email-badge-style');
 document.body.appendChild(emailBadgeStyle);
 
-
-function changeTableVisibility(desiredVisibility) {
-
-    // change emails table visibility
-    document.getElementById(':3').style.visibility = desiredVisibility;
-    // change table toolbar visibility
-    document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
-
-}
-
 // check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
     if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') {
@@ -34,6 +24,23 @@ function checkForInboxHash() {
     } else {
         return false;
     }
+}
+
+// add style that hides email table on initial load to avoid flicker
+let emailTableStyle = document.createElement('style');
+emailTableStyle.classList.add('hider__email-table-style');
+document.body.appendChild(emailTableStyle);
+if (checkForInboxHash()) {
+    emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+}
+
+function changeTableVisibility(desiredVisibility) {
+    // change emails table visibility
+    document.getElementById(':3').style.visibility = desiredVisibility;
+    // change table toolbar visibility
+    document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+    // remove table styling used to avoid inbox flicker on load and when menu clicked
+    emailTableStyle.innerHTML = ``;
 }
 
 function handleHashChange() {
@@ -59,7 +66,7 @@ function handleHashChange() {
         // if user isn't viewing inbox and inbox is hidden
         if (!showInbox) {
             // unbold the inbox menu
-            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;            
+            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
         }
     }
 }
@@ -143,18 +150,7 @@ function toggleInbox(showInbox) {
 
     // swap title each time button pressed
     swapTitle(showInbox)
-
 }
-
-// hide inbox on initial load to avoid flicker
-const checkForInbox = setInterval(function () {
-    if (document.getElementById(':3')) {
-        if (location.hash === '#inbox') {
-            document.getElementById(':3').style.visibility = 'hidden';
-        }
-        clearInterval(checkForInbox);
-    }
-}, 100);
 
 // start gmail hider by adding the button and hiding the inbox
 function initiateHider() {
@@ -185,7 +181,7 @@ const checkForStartConditions = setInterval(function () {
 function addInboxMenuEvent() {
     document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
         if (!showInbox) {
-            document.getElementById(':3').style.visibility = 'hidden';
+            emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
         }
     });
 }
