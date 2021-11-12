@@ -5,7 +5,7 @@ const gmailInboxHiderURL = `${githubURL}/mthurmond/gmail-inbox-hider`;
 const feedbackURL = `${githubURL}/mthurmond/gmail-inbox-hider/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
-const extensionsDetailsURL = `${manageExtensionsURL}?id=pfalfcdhipoelhhnjckjeddjfoackijp`;
+const extensionsDetailsURL = `${manageExtensionsURL}?id=koobmglbcddgeoopgphanmhjppfaehaa`;
 
 //open the appropriate new tab when the user clicks each link
 document.querySelector('.feedbackLink').addEventListener('click', function() {
