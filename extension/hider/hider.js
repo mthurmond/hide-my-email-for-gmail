@@ -19,7 +19,7 @@ document.body.appendChild(emailBadgeStyle);
 
 // check if user is viewing inbox, both with and without a new email window open
 function checkForInboxHash() {
-    if (location.hash === '#inbox' || location.hash === '#inbox?compose=new') {
+    if (location.hash.search('#inbox') != -1) {
         return true;
     } else {
         return false;
