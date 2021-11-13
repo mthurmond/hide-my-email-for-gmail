@@ -1,10 +1,10 @@
 {
     "name": "Gmail inbox hider",
-    "version": "1.6",
+    "version": "1.7",
     "description": "Hide your gmail inbox to focus and get in the flow. Unhide it whenever you're ready.",
-    "manifest_version": 2,
+    "manifest_version": 3,
 
-    "browser_action": {
+    "action": {
         "default_popup": "popup/popup.html"
       },
 
