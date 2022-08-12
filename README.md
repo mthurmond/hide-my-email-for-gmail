@@ -1,5 +1,5 @@
 # Gmail inbox hider
- [Install the chrome extension](https://chrome.google.com/webstore/detail/slack-hider/ojfkenmmieminleikclgocedgpggeecp) so you can use gmail in a calmer, more intentional way. 
+ [Install the chrome extension](https://chrome.google.com/webstore/detail/gmail-inbox-hider/koobmglbcddgeoopgphanmhjppfaehaa?hl=en) so you can use gmail in a calmer, more intentional way. 
  
  The extension adds a button to gmail that lets you hide your inbox whenever you want. While your inbox is hidden, you can still use the top search bar to jump to specific emails or conversations, but the inbox and red alert badges won't appear. Since this is a browser extension, it only works if you use gmail's web app.
  
