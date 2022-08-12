@@ -146,7 +146,7 @@ function toggleInbox(showInbox) {
 
     // flip display of unread email badge 
     const displayValue = showInbox ? 'flex' : 'none !important'
-    emailBadgeStyle.innerHTML = `.bsU { display: ${displayValue}; }`;
+    emailBadgeStyle.innerHTML = `.bsU, span.XU.aH6 { display: ${displayValue}; }`;
 
     // swap title each time button pressed
     swapTitle(showInbox)
