@@ -35,10 +35,11 @@ if (checkForInboxHash()) {
 }
 
 function changeTableVisibility(desiredVisibility) {
-    // change emails table visibility
-    document.getElementById(':3').style.visibility = desiredVisibility;
-    // change table toolbar visibility
-    document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+    // change toolbar visibility
+    document.querySelector('[gh="mtb"]').parentNode.style.visibility = desiredVisibility
+    // change email table visibility
+    document.querySelector('[gh="tl"]').style.visibility = desiredVisibility
+
     // remove table styling used to avoid inbox flicker on load and when menu clicked
     emailTableStyle.innerHTML = ``;
 }
@@ -84,8 +85,8 @@ function addToggleButton() {
         toggleInbox(showInbox);
     });
 
-    //store gmail button toolbar in a variable
-    const buttonToolbar = document.getElementById(':4');
+    //store gmail's toolbar in a variable
+    const buttonToolbar = document.querySelector("[gh='tm']");
     buttonToolbar.prepend(inboxToggleButton);
 
     window.onhashchange = handleHashChange;
@@ -164,7 +165,7 @@ function initiateHider() {
 const checkForStartConditions = setInterval(function () {
     if (
         // top nav buttons loaded
-        document.querySelector("div#\\:4 [gh='tm']")
+        document.querySelector("[gh='tm']")
         // inbox menu item loaded
         && document.querySelector("div [data-tooltip='Inbox']")
         // title loaded
