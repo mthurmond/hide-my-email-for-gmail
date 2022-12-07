@@ -89,8 +89,6 @@ function addToggleButton() {
     const buttonToolbar = document.querySelector("[gh='tm']");
     buttonToolbar.prepend(inboxToggleButton);
 
-    window.onhashchange = handleHashChange;
-
 }
 
 function swapTitle(showInbox) {
@@ -175,6 +173,8 @@ const checkForStartConditions = setInterval(function () {
     ) {
         clearInterval(checkForStartConditions);
         initiateHider();
+        window.onhashchange = handleHashChange;
+        reinsertButtonIfTypeChange();
     }
 }, 100);
 
@@ -190,4 +190,31 @@ function addInboxMenuEvent() {
 // shortly after window loads, call function that reduces inbox flicker
 window.onload = function () {
     setTimeout(addInboxMenuEvent, 3000);
+}
+
+
+// if user changes "inbox type", reinsert the toggle button
+function reinsertButtonIfTypeChange() {
+    // create mutation observer that fires if body is mutated
+    inboxTypeObserver = new MutationObserver(function (mutations) {
+        if (checkForInboxHash()) {
+            console.log('mutation')
+            const menuBar = document.querySelector('[gh="tm"]')
+            const toggleButton = document.getElementById('hider__toggle-button')
+            if (!toggleButton) {
+                showInbox = true
+                initiateHider()
+            } else if (toggleButton && !menuBar.contains(toggleButton)) {
+                toggleButton.remove()    
+                showInbox = true
+                initiateHider()
+            }
+        }
+    });
+
+    inboxTypeObserver.observe(
+        // document.querySelector("[gh='tm']"),
+        document.body,
+        { characterData: false, childList: true }
+    );
 }
