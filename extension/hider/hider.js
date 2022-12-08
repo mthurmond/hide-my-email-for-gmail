@@ -32,6 +32,10 @@ emailTableStyle.classList.add('hider__email-table-style');
 document.body.appendChild(emailTableStyle);
 if (checkForInboxHash()) {
     emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+    // revert change after a short time so if toggle button doesn't load the user can still view their emails
+    setTimeout(() => {
+        emailTableStyle.innerHTML = ``
+    }, 1000);
 }
 
 function changeTableVisibility(desiredVisibility) {
