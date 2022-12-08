@@ -18,7 +18,7 @@ They're all free, open source, and designed to help you get in the flow.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend
-Looking for other helpful extensions? I use and recommend all of these: 
+Looking for other helpful extensions? I use and recommend all of these. 
 
 1. [News Feed Eradicator](https://github.com/jordwest/news-feed-eradicator) for Facebook™
 2. [Distraction Free](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en) for Youtube™
