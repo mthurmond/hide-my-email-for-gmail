@@ -11,7 +11,7 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/gmail-
  ![Gmail inbox hider gif](/chrome-store/inbox-showing.png)
 
 # All the extensions I've created
-Below are other extensions I've created. They're all free and open source. 
+They're all free, open source, and designed to help you get in the flow.
 
 1. [Distraction Free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
 2. [Gmail inbox hider](https://github.com/mthurmond/gmail-inbox-hider): Hide your Gmail™ inbox whenever you want.
