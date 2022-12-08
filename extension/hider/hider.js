@@ -17,9 +17,15 @@ const emailBadgeStyle = document.createElement('style');
 emailBadgeStyle.classList.add('hider__email-badge-style');
 document.body.appendChild(emailBadgeStyle);
 
-// check if user is viewing inbox, both with and without a new email window open
+// returns true if user is viewing their inbox, even if there's a "compose" email window open
+// returns false if user is viewing a specific email in their inbox
 function checkForInboxHash() {
-    if (location.hash.search('#inbox') != -1) {
+    if (
+        // user is viewing inbox
+        location.hash.search(/^#inbox$/) != -1
+        // user is viewing inbox, and composing one or more messages
+        || location.hash.search(/^#inbox\?compose.*/) != -1
+    ) {
         return true;
     } else {
         return false;
@@ -54,14 +60,14 @@ function handleHashChange() {
     // store correct visibility value based on whether the inbox is hidden
     const visibilityValue = showInbox ? 'visible' : 'hidden';
 
-    // if user is viewing inbox
+    // if user is viewing all emails in inbox
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
-        // flip emails table and toolbar visibility
+        // set inbox visibility to whatever user last toggled the button to
         changeTableVisibility(visibilityValue);
 
-    // if user isn't viewing inbox
+    // if user isn't viewing their inbox
     } else {
         // hide button
         inboxToggleButton.style.display = "none";
