@@ -40,23 +40,25 @@ if (checkForInboxHash()) {
     emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
     // revert change after a short time so if toggle button doesn't load the user can still view their emails
     setTimeout(() => {
-        emailTableStyle.innerHTML = ``
+        document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
     }, 1000);
 }
 
 function changeTableVisibility(desiredVisibility) {
+    // change table toolbar visibility
+    if (document.querySelector("div#\\:4 [gh='tm']")) {
+        document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+    }
     // change emails table visibility
     document.getElementById(':3').style.visibility = desiredVisibility;
-    // change table toolbar visibility
-    document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
-    // remove table styling used to avoid inbox flicker on load and when menu clicked
+
+    // remove table styling that's used to avoid inbox flicker on load and when menu clicked
     emailTableStyle.innerHTML = ``;
 }
 
 function handleHashChange() {
     // remove custom inbox menu styling
     inboxFontStyle.innerHTML = '';
-
     // store correct visibility value based on whether the inbox is hidden
     const visibilityValue = showInbox ? 'visible' : 'hidden';
 
@@ -190,8 +192,13 @@ const checkForStartConditions = setInterval(function () {
 // reduce inbox flicker when user clicks back to inbox menu item
 function addInboxMenuEvent() {
     document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
-        if (!showInbox) {
+        // if the user is hiding their inbox and the toggle button has been added to the page
+        if (!showInbox && document.getElementById('hider__toggle-button')) {
             emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+            // revert change after a short time so if toggle button doesn't load the user can still view their emails
+            setTimeout(() => {
+                document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
+            }, 1000);
         }
     });
 }
