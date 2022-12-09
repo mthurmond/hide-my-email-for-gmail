@@ -4,7 +4,7 @@
  
  The extension adds a button to Gmail™ that lets you hide your inbox whenever you want. While your inbox is hidden, you can still use the top search bar to jump to specific emails or conversations, but the inbox and red alert badges won't appear. Since this is a browser extension, it only works if you use Gmail's™ web app.
  
-See a problem? Please [file any issues here](https://github.com/mthurmond/gmail-inbox-hider/issues). 
+See a problem? Please [file any issues here](https://github.com/mthurmond/inbox-hider-for-gmail/issues). 
 
  ## Screenshots
  ![Gmail inbox hider gif](/chrome-store/inbox-hidden.png)
@@ -14,7 +14,7 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/gmail-
 They're all free, open source, and designed to help you get in the flow.
 
 1. [Distraction free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
-2. [Inbox hider for Gmail™](https://github.com/mthurmond/gmail-inbox-hider): Hide your Gmail™ inbox whenever you want.
+2. [Inbox hider for Gmail™](https://github.com/mthurmond/inbox-hider-for-gmail): Hide your Gmail™ inbox whenever you want.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend
