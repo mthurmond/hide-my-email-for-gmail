@@ -1,4 +1,4 @@
-# Gmail inbox hider
+# Inbox hider for Gmail™
 ## Overview
  [Install the chrome extension](https://chrome.google.com/webstore/detail/gmail-inbox-hider/koobmglbcddgeoopgphanmhjppfaehaa?hl=en) so you can use Gmail™ in a calmer, more intentional way. 
  
@@ -13,8 +13,8 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/gmail-
 # All the extensions I've created
 They're all free, open source, and designed to help you get in the flow.
 
-1. [Distraction Free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
-2. [Gmail inbox hider](https://github.com/mthurmond/gmail-inbox-hider): Hide your Gmail™ inbox whenever you want.
+1. [Distraction free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
+2. [Inbox hider for Gmail™](https://github.com/mthurmond/gmail-inbox-hider): Hide your Gmail™ inbox whenever you want.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend

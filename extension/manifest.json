@@ -1,7 +1,7 @@
 {
-    "name": "Gmail inbox hider",
+    "name": "Inbox hider for Gmail™",
     "version": "2.1",
-    "description": "Hide your gmail inbox to focus and get in the flow. Unhide it whenever you're ready.",
+    "description": "Hide your Gmail™ inbox to focus and get in the flow. Unhide it whenever you're ready.",
     "manifest_version": 3,
 
     "action": {
