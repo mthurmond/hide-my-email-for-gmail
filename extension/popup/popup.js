@@ -1,8 +1,8 @@
 const githubURL = 'https://github.com/';
 
 const mattURL = `${githubURL}/mthurmond`;
-const gmailInboxHiderURL = `${githubURL}/mthurmond/gmail-inbox-hider`;
-const feedbackURL = `${githubURL}/mthurmond/gmail-inbox-hider/issues`;
+const gmailInboxHiderURL = `${githubURL}/mthurmond/inbox-hider-for-gmail`;
+const feedbackURL = `${githubURL}/mthurmond/inbox-hider-for-gmail/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
 const extensionsDetailsURL = `${manageExtensionsURL}?id=koobmglbcddgeoopgphanmhjppfaehaa`;

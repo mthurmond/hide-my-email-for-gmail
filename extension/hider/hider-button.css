@@ -20,6 +20,6 @@
 }
 
 /* add border to bottom of gmail toolbar to replace box shadow */
-[gh='tm'] {
+div#\:4 {
     border-bottom: 1px solid #e5e5e5 !important;
 }

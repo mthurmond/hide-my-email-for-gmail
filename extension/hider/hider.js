@@ -17,9 +17,15 @@ const emailBadgeStyle = document.createElement('style');
 emailBadgeStyle.classList.add('hider__email-badge-style');
 document.body.appendChild(emailBadgeStyle);
 
-// check if user is viewing inbox, both with and without a new email window open
+// returns true if user is viewing their inbox, even if there's a "compose" email window open
+// returns false if user is viewing a specific email in their inbox
 function checkForInboxHash() {
-    if (location.hash.search('#inbox') != -1) {
+    if (
+        // user is viewing inbox
+        location.hash.search(/^#inbox$/) != -1
+        // user is viewing inbox, and composing one or more messages
+        || location.hash.search(/^#inbox\?compose.*/) != -1
+    ) {
         return true;
     } else {
         return false;
@@ -32,33 +38,38 @@ emailTableStyle.classList.add('hider__email-table-style');
 document.body.appendChild(emailTableStyle);
 if (checkForInboxHash()) {
     emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+    // revert change after a short time so if toggle button doesn't load the user can still view their emails
+    setTimeout(() => {
+        document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
+    }, 1000);
 }
 
 function changeTableVisibility(desiredVisibility) {
-    // change toolbar visibility
-    document.querySelector('[gh="mtb"]').parentNode.style.visibility = desiredVisibility
-    // change email table visibility
-    document.querySelector('[gh="tl"]').style.visibility = desiredVisibility
+    // change table toolbar visibility
+    if (document.querySelector("div#\\:4 [gh='tm']")) {
+        document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+    }
+    // change emails table visibility
+    document.getElementById(':3').style.visibility = desiredVisibility;
 
-    // remove table styling used to avoid inbox flicker on load and when menu clicked
+    // remove table styling that's used to avoid inbox flicker on load and when menu clicked
     emailTableStyle.innerHTML = ``;
 }
 
 function handleHashChange() {
     // remove custom inbox menu styling
     inboxFontStyle.innerHTML = '';
-
     // store correct visibility value based on whether the inbox is hidden
     const visibilityValue = showInbox ? 'visible' : 'hidden';
 
-    // if user is viewing inbox
+    // if user is viewing all emails in inbox
     if (checkForInboxHash()) {
         // show button
         inboxToggleButton.style.display = 'flex';
-        // flip emails table and toolbar visibility
+        // set inbox visibility to whatever user last toggled the button to
         changeTableVisibility(visibilityValue);
 
-    // if user isn't viewing inbox
+    // if user isn't viewing their inbox
     } else {
         // hide button
         inboxToggleButton.style.display = "none";
@@ -85,8 +96,8 @@ function addToggleButton() {
         toggleInbox(showInbox);
     });
 
-    //store gmail's toolbar in a variable
-    const buttonToolbar = document.querySelector("[gh='tm']");
+    //store gmail button toolbar in a variable
+    const buttonToolbar = document.getElementById(':4');
     buttonToolbar.prepend(inboxToggleButton);
 
 }
@@ -163,7 +174,7 @@ function initiateHider() {
 const checkForStartConditions = setInterval(function () {
     if (
         // top nav buttons loaded
-        document.querySelector("[gh='tm']")
+        document.querySelector("div#\\:4 [gh='tm']")
         // inbox menu item loaded
         && document.querySelector("div [data-tooltip='Inbox']")
         // title loaded
@@ -181,8 +192,13 @@ const checkForStartConditions = setInterval(function () {
 // reduce inbox flicker when user clicks back to inbox menu item
 function addInboxMenuEvent() {
     document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
-        if (!showInbox) {
+        // if the user is hiding their inbox and the toggle button has been added to the page
+        if (!showInbox && document.getElementById('hider__toggle-button')) {
             emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+            // revert change after a short time so if toggle button doesn't load the user can still view their emails
+            setTimeout(() => {
+                document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
+            }, 1000);
         }
     });
 }
