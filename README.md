@@ -1,14 +1,14 @@
 # Inbox hider for Gmail™
 ## Overview
- [Install the chrome extension](https://chrome.google.com/webstore/detail/gmail-inbox-hider/koobmglbcddgeoopgphanmhjppfaehaa?hl=en) so you can use Gmail™ in a calmer, more intentional way. 
+[Install the chrome extension](https://chrome.google.com/webstore/detail/gmail-inbox-hider/koobmglbcddgeoopgphanmhjppfaehaa?hl=en) so you can use Gmail™ in a calmer, more intentional way. 
  
- The extension adds a button to Gmail™ that lets you hide your inbox whenever you want. While your inbox is hidden, you can still use the top search bar to find specific emails or conversations, but the inbox and red alert badges won't appear. Since this is a browser extension, it only works if you use Gmail's™ web app.
- 
+The extension adds a button to Gmail™ that lets you hide your inbox whenever you want. While your inbox is hidden, you can still use the top search bar to find specific emails or conversations, but the inbox and red alert badges won't appear. Since this is a browser extension, it only works if you use Gmail's™ web app.
+
 See a problem? Please [file any issues here](https://github.com/mthurmond/inbox-hider-for-gmail/issues). 
 
- ## Screenshots
- ![Inbox is hidden](/chrome-store/inbox-hidden.png)
- ![Inbox is showing](/chrome-store/inbox-showing.png)
+## Screenshots
+![Inbox is hidden](/chrome-store/inbox-hidden.png)
+![Inbox is showing](/chrome-store/inbox-showing.png)
 
 # All the extensions I've created
 They're all free, open source, and designed to help you get in the flow.
@@ -22,4 +22,4 @@ Looking for other helpful extensions? I use and recommend all of these.
 
 1. [News Feed Eradicator](https://github.com/jordwest/news-feed-eradicator) for Facebook™
 2. [Distraction Free](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en) for Youtube™
-3. [uBlock](https://github.com/gorhill/uBlock) for ad blocking 
+3. [uBlock](https://github.com/gorhill/uBlock) for ad blocking
