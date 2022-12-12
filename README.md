@@ -1,4 +1,4 @@
-# Hide my email (for Gmail™)
+# Hide My Email for Gmail™
 ## Overview
 [Install the chrome extension](https://chrome.google.com/webstore/detail/gmail-inbox-hider/koobmglbcddgeoopgphanmhjppfaehaa?hl=en) so you can use Gmail™ in a calmer, more intentional way. 
  
@@ -14,7 +14,7 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/inbox-
 They're all free, open source, and designed to help you get in the flow.
 
 1. [Distraction free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
-2. [Hide my email (for Gmail™)](https://github.com/mthurmond/inbox-hider-for-gmail): Hide your Gmail™ emails whenever you want.
+2. [Hide My Email for Gmail™](https://github.com/mthurmond/inbox-hider-for-gmail): Hide your Gmail™ emails whenever you want.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend
