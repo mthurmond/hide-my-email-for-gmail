@@ -87,7 +87,7 @@ function addToggleButton() {
     inboxToggleButton = document.createElement('button');
     inboxToggleButton.id = 'hider__toggle-button';
     inboxToggleButton.classList.add('GN', 'GW');
-    inboxToggleButton.innerHTML = 'Show inbox';
+    inboxToggleButton.innerHTML = 'Show emails';
 
     // call "toggleInbox" when button is clicked
     inboxToggleButton.addEventListener('click', function (evt) {
@@ -147,7 +147,7 @@ function swapTitle(showInbox) {
 
 // called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleInbox(showInbox) {
-    inboxToggleButton.innerHTML = showInbox ? 'Hide inbox' : 'Show inbox';
+    inboxToggleButton.innerHTML = showInbox ? 'Hide emails' : 'Show emails';
 
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButton.blur();
