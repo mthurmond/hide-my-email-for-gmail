@@ -17,8 +17,8 @@ The extension adds a button to Gmail™ that lets you hide your emails whenever 
 See a problem? Please [file any issues here](https://github.com/mthurmond/inbox-hider-for-gmail/issues). 
 
 ## Screenshots
-![Emails are hidden](/chrome-store/inbox-hidden.png)
-![Emails are showing](/chrome-store/inbox-showing.png)
+![Emails are hidden](/chrome-store/emails-hidden.png)
+![Emails are showing](/chrome-store/emails-showing.png)
 
 # All the extensions I've created
 They're all free, open source, and designed to help you get in the flow.
