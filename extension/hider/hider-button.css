@@ -4,7 +4,7 @@
     height: 48px;
     padding-top: 2px;
     color: #424447;
-    z-index: 10;  /* ensures button clickable if inbox type = multiple inboxes */
+    z-index: 1; /* ensures button clickable if user switches to "multiple inboxes" setting */
 }
 
 #hider__toggle-button:hover::before {
