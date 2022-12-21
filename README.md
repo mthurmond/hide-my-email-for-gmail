@@ -7,7 +7,7 @@ In the meantime, you can still use this extension by doing the following:
 2. Go to "chrome://extensions/"
 3. Click the "Load unpacked" button and upload the "extensions" folder. 
 
-Once the extension is re-listed in the Chrome Web Store, I will post an update here. I am hoping it will be less than a week, so by Monday December 19th 2022. Thanks to all the loyal users here! 
+Once the extension is re-listed in the Chrome Web Store, I will post an update here. I am hoping it will be by Wednesday December 28th 2022. Thanks to all the loyal users here! 
 
 ## Overview
 Install the chrome extension above so you can use Gmail™ in a calmer, more intentional way. 
