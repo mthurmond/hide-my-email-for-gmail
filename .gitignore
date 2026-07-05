@@ -1,5 +1,4 @@
-*.zip
-screenshot*
 roadmap.md
+scratch.md
+*.zip
 .DS_Store
-scratch.*
