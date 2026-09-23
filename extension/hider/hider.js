@@ -36,29 +36,50 @@ function checkForInboxHash() {
 let emailTableStyle = document.createElement('style');
 emailTableStyle.classList.add('hider__email-table-style');
 document.body.appendChild(emailTableStyle);
+function getMessageListContainer() {
+    return document.querySelector('[gh="tl"]');
+}
+
 if (checkForInboxHash()) {
-    emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+    emailTableStyle.textContent = '[gh="tl"] { visibility: hidden !important; }';
     // revert change after a short time so if toggle button doesn't load the user can still view their emails
     setTimeout(() => {
-        document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
+        document.getElementsByClassName('hider__email-table-style')[0].textContent = '';
     }, 1000);
 }
 
-function changeTableVisibility(desiredVisibility) {
-    // change table toolbar visibility
-    if (document.querySelector("div#\\:4 [gh='tm']")) {
-        document.querySelector("div#\\:4 [gh='tm']").style.visibility = desiredVisibility;
+function changeToolbarVisibility(desiredVisibility) {
+    const buttonToolbar = document.querySelector("[gh='tm']");
+    if (!buttonToolbar) return;
+
+    Array.from(buttonToolbar.children).forEach(child => {
+        if (child.id !== 'hider__toggle-button') {
+            child.style.visibility = desiredVisibility;
+        }
+    });
+
+    if (inboxToggleButton) {
+        inboxToggleButton.style.visibility = 'visible';
     }
-    // change emails table visibility
-    document.getElementById(':3').style.visibility = desiredVisibility;
+}
+
+function changeTableVisibility(desiredVisibility) {
+    // hide or show native Gmail toolbar controls without hiding the toolbar container itself
+    changeToolbarVisibility(desiredVisibility);
+
+    // hide/show the actual message list below the toolbar instead of hiding the ancestor :3 container
+    const messageListContainer = getMessageListContainer();
+    if (messageListContainer) {
+        messageListContainer.style.visibility = desiredVisibility;
+    }
 
     // remove table styling that's used to avoid inbox flicker on load and when menu clicked
-    emailTableStyle.innerHTML = ``;
+    emailTableStyle.textContent = '';
 }
 
 function handleHashChange() {
     // remove custom inbox menu styling
-    inboxFontStyle.innerHTML = '';
+    inboxFontStyle.textContent = '';
     // store correct visibility value based on whether the inbox is hidden
     const visibilityValue = showInbox ? 'visible' : 'hidden';
 
@@ -78,29 +99,37 @@ function handleHashChange() {
         // if user isn't viewing inbox and inbox is hidden
         if (!showInbox) {
             // unbold the inbox menu
-            inboxFontStyle.innerHTML = `${inboxMenuSelector} { font-weight: normal !important; }`;
+            inboxFontStyle.textContent = `${inboxMenuSelector} { font-weight: normal !important; }`;
         }
     }
 }
 
 function addToggleButton() {
-    inboxToggleButton = document.createElement('button');
-    inboxToggleButton.id = 'hider__toggle-button';
-    inboxToggleButton.classList.add('GN', 'GW');
-    inboxToggleButton.innerHTML = 'Show emails';
+    const existingButton = document.getElementById('hider__toggle-button');
 
-    // call "toggleInbox" when button is clicked
-    inboxToggleButton.addEventListener('click', function (evt) {
-        // flip the showInbox boolean to change the inbox state from it's prior state
-        showInbox = !showInbox;
-        toggleInbox(showInbox);
-    });
+    if (existingButton) {
+        inboxToggleButton = existingButton;
+    } else {
+        inboxToggleButton = document.createElement('button');
+        inboxToggleButton.id = 'hider__toggle-button';
+        inboxToggleButton.classList.add('GN', 'GW');
+        inboxToggleButton.textContent = 'Show emails';
 
-    //store gmail button toolbar in a variable
-    const buttonToolbar = document.getElementById(':4');
-    buttonToolbar.prepend(inboxToggleButton);
+        // call "toggleInbox" when button is clicked
+        inboxToggleButton.addEventListener('click', function (evt) {
+            // flip the showInbox boolean to change the inbox state from it's prior state
+            showInbox = !showInbox;
+            toggleInbox(showInbox);
+        });
 
-    window.onhashchange = handleHashChange;
+        //store gmail button toolbar in a variable
+        const buttonToolbar = document.querySelector("[gh='tm']");
+        if (buttonToolbar) {
+            buttonToolbar.prepend(inboxToggleButton);
+        }
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
 
 }
 
@@ -111,7 +140,8 @@ function swapTitle(showInbox) {
         chrome.storage.sync.get(['titleText'], function (result) {
 
             // store unread messages. if none, div will not be in dom, so store '0'.
-            let unreadEmailCount = document.querySelector('div.bsU') ? document.querySelector('div.bsU').innerHTML : '0';
+            const unreadBadge = document.querySelector('div.bsU');
+            let unreadEmailCount = unreadBadge ? unreadBadge.textContent : '0';
 
             if (result.titleText && result.titleText != 'Gmail') {
                 // if actual title was stored when messages were hidden, apply it and swap in the latest unread email count  
@@ -125,7 +155,9 @@ function swapTitle(showInbox) {
         });
 
         // remove the mutation observer
-        titleObserver.disconnect();
+        if (titleObserver) {
+            titleObserver.disconnect();
+        }
 
     } else {
         chrome.storage.sync.set({ 'titleText': document.title }, function () { });
@@ -147,7 +179,7 @@ function swapTitle(showInbox) {
 
 // called when show/hide button clicked, with current "showInbox" boolean value. clicking the button adjusts the sidebar visibility and button text.  
 function toggleInbox(showInbox) {
-    inboxToggleButton.innerHTML = showInbox ? 'Hide emails' : 'Show emails';
+    inboxToggleButton.textContent = showInbox ? 'Hide emails' : 'Show emails';
 
     // remove focus from button after it's pressed, since native gmail class "GW" has an unwanted focus state
     inboxToggleButton.blur();
@@ -158,7 +190,7 @@ function toggleInbox(showInbox) {
 
     // flip display of unread email badge 
     const displayValue = showInbox ? 'flex' : 'none !important'
-    emailBadgeStyle.innerHTML = `.bsU, span.XU.aH6 { display: ${displayValue}; }`;
+    emailBadgeStyle.textContent = `.bsU, span.XU.aH6 { display: ${displayValue}; }`;
 
     // swap title each time button pressed
     swapTitle(showInbox)
@@ -176,7 +208,7 @@ function initiateHider() {
 const checkForStartConditions = setInterval(function () {
     if (
         // top nav buttons loaded
-        document.querySelector("div#\\:4 [gh='tm']")
+        document.querySelector("[gh='tm']")
         // inbox menu item loaded
         && document.querySelector("div [data-tooltip='Inbox']")
         // title loaded
@@ -191,19 +223,22 @@ const checkForStartConditions = setInterval(function () {
 
 // reduce inbox flicker when user clicks back to inbox menu item
 function addInboxMenuEvent() {
-    document.querySelector("div [data-tooltip='Inbox']").addEventListener('click', function (evt) {
+    const inboxMenuItem = document.querySelector("div [data-tooltip='Inbox']");
+    if (!inboxMenuItem) return;
+
+    inboxMenuItem.addEventListener('click', function (evt) {
         // if the user is hiding their inbox and the toggle button has been added to the page
         if (!showInbox && document.getElementById('hider__toggle-button')) {
-            emailTableStyle.innerHTML = `div#\\:3 { visibility: hidden !important; }`;
+            emailTableStyle.textContent = '[gh="tl"] { visibility: hidden !important; }';
             // revert change after a short time so if toggle button doesn't load the user can still view their emails
             setTimeout(() => {
-                document.getElementsByClassName('hider__email-table-style')[0].innerHTML = ``
+                document.getElementsByClassName('hider__email-table-style')[0].textContent = '';
             }, 1000);
         }
     });
 }
 
 // shortly after window loads, call function that reduces inbox flicker
-window.onload = function () {
+window.addEventListener('load', function () {
     setTimeout(addInboxMenuEvent, 3000);
-}
+});
